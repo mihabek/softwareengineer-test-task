@@ -35,6 +35,9 @@ public class GrpcClient{
     }
 
     private static BigDecimal deserialize( DecimalValue value ){
+        if(value == null){
+            return null;
+        }
         return new BigDecimal(
                 new BigInteger( value.getValue().toByteArray() ),
                 value.getScale(),

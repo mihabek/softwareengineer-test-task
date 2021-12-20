@@ -130,6 +130,9 @@ public class ScoringServiceImpl extends ScoringServiceGrpc.ScoringServiceImplBas
     }
 
     private DecimalValue serialize( BigDecimal value ){
+        if(value == null){
+            return null;
+        }
         return DecimalValue.newBuilder()
                 .setScale( value.scale() )
                 .setPrecision( value.precision() )

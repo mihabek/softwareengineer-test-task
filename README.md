@@ -7,12 +7,12 @@ Open new window from command line and navigate to project root folder. Run:
 1. `./gradlew clean build` to build files needed for this application
 2. `./gradlew bootRun` to start application
 
-The application accepts gRPC and REST requests
+This application accepts gRPC and REST calls
 - gRPC calls are available through port: 9090
 - REST calls are available through port: 8080
 
 ### Testing application with gRPC
-Open new command line window or tab and run:
+Open new window or tab from command line and run:
 1. `./gradlew installDist` to compile client for testing gRPC requests
 2. `./build/install/scoring-api/bin/scoring-client` to run client that executes scoring-api requests through gRPC
 3. you can see and update request params for gRPC calls in file `GrpcClient.java`
