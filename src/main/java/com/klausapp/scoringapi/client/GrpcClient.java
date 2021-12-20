@@ -21,8 +21,10 @@ public class GrpcClient{
         CategoryScoreResponseWrapper categoryDailyScores = stub.findCategoryScores( createScoreRequest( "2020-01-01", "2020-02-01" ) );
         CategoryScoreResponseWrapper categoryWeeklyScores = stub.findCategoryScores( createScoreRequest( "2020-01-01", "2020-02-10" ) );
         TicketScoreResponseWrapper ticketScores = stub.findTicketScores( createScoreRequest( "2020-01-01", "2020-02-01" ) );
-        OverallScoreResponse overallScore = stub.getOverallScore( createScoreRequest( "2020-01-01", "2020-02-01" ));
-        log.info( "Overall score received from server: " + deserialize( overallScore.getScore() ) );
+        OverallScoreResponse overallScore = stub.getOverallScore( createScoreRequest( "2021-01-01", "2021-02-01" ) );
+        if( overallScore.hasScore() ){
+            log.info( "Overall score received from server: " + deserialize( overallScore.getScore() ) );
+        }
         ScoreChangeResponse scoreChange = stub.getOverallScoreChange(
                 createScoreChangeRequest(
                         createPeriod( "2020-01-01", "2020-02-01" ),
@@ -35,9 +37,6 @@ public class GrpcClient{
     }
 
     private static BigDecimal deserialize( DecimalValue value ){
-        if(value == null){
-            return null;
-        }
         return new BigDecimal(
                 new BigInteger( value.getValue().toByteArray() ),
                 value.getScale(),
@@ -51,7 +50,7 @@ public class GrpcClient{
                 .build();
     }
 
-    private static ScoreChangeRequest createScoreChangeRequest(Period previous, Period selected){
+    private static ScoreChangeRequest createScoreChangeRequest( Period previous, Period selected ){
         return ScoreChangeRequest.newBuilder()
                 .setPreviousPeriod( previous )
                 .setSelectedPeriod( selected )

@@ -1,6 +1,5 @@
 package com.klausapp.scoringapi.service;
 import com.google.protobuf.ByteString;
-import com.klausapp.scoringapi.model.RatingCategory;
 import com.klausapp.scoringapi.model.*;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
@@ -70,9 +69,13 @@ public class ScoringServiceImpl extends ScoringServiceGrpc.ScoringServiceImplBas
                 .map( this::createCategoryRatingResponse )
                 .collect( toList() );
 
-        return CategoryScoreResponse.newBuilder()
+        CategoryScoreResponse.Builder responseBuilder = CategoryScoreResponse.newBuilder();
+        if( categoryScore.getScore() != null ){
+            responseBuilder.setScore( serialize( categoryScore.getScore() ) );
+        }
+
+        return responseBuilder
                 .setDate( categoryScore.getDate() )
-                .setScore( serialize( categoryScore.getScore() ) )
                 .addAllCategoryRatingList( categoryRatingList )
                 .build();
     }
@@ -100,9 +103,13 @@ public class ScoringServiceImpl extends ScoringServiceGrpc.ScoringServiceImplBas
     }
 
     private CategoryRatingResponse createCategoryRatingResponse( CategoryRating categoryRating ){
-        return CategoryRatingResponse.newBuilder()
+        CategoryRatingResponse.Builder responseBuilder = CategoryRatingResponse.newBuilder();
+        if( categoryRating.getPercentageFromMax() != null ){
+            responseBuilder.setPercentageFromMax( serialize( categoryRating.getPercentageFromMax() ) );
+        }
+
+        return responseBuilder
                 .setCategory( createRatingCategoryResponse( categoryRating.getCategory() ) )
-                .setPercentageFromMax( serialize( categoryRating.getPercentageFromMax() ) )
                 .setRatingsCount( categoryRating.getRatingsCount() )
                 .build();
     }
@@ -116,23 +123,30 @@ public class ScoringServiceImpl extends ScoringServiceGrpc.ScoringServiceImplBas
     }
 
     private ScoreChangeResponse createScoreChangeResponse( ScoreChange scoreChange ){
-        return ScoreChangeResponse.newBuilder()
-                .setPreviousScore( serialize( scoreChange.getPreviousScore() ) )
-                .setSelectedScore( serialize( scoreChange.getSelectedScore() ) )
-                .setDifference( serialize( scoreChange.getDifference() ) )
-                .build();
+        ScoreChangeResponse.Builder responseBuilder = ScoreChangeResponse.newBuilder();
+        if( scoreChange.getPreviousScore() != null ){
+            responseBuilder.setPreviousScore( serialize( scoreChange.getPreviousScore() ) );
+        }
+        if( scoreChange.getSelectedScore() != null ){
+            responseBuilder.setSelectedScore( serialize( scoreChange.getSelectedScore() ) );
+        }
+        if( scoreChange.getDifference() != null ){
+            responseBuilder.setDifference( serialize( scoreChange.getDifference() ) );
+        }
+
+        return responseBuilder.build();
     }
 
     private OverallScoreResponse createOverallScoreResponse( BigDecimal score ){
-        return OverallScoreResponse.newBuilder()
-                .setScore( serialize( score ) )
-                .build();
+        OverallScoreResponse.Builder responseBuilder = OverallScoreResponse.newBuilder();
+        if( score != null ){
+            responseBuilder.setScore( serialize( score ) );
+        }
+
+        return responseBuilder.build();
     }
 
     private DecimalValue serialize( BigDecimal value ){
-        if(value == null){
-            return null;
-        }
         return DecimalValue.newBuilder()
                 .setScale( value.scale() )
                 .setPrecision( value.precision() )
