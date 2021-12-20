@@ -1,3 +1,29 @@
+### What you need for this application
+1. java 11
+2. gradle 7
+
+### Run application
+Open new window from command line and navigate to project root folder. Run:
+1. `./gradlew clean build` to build files needed for this application
+2. `./gradlew bootRun` to start application
+
+The application accepts gRPC and REST requests
+- gRPC calls are available through port: 9090
+- REST calls are available through port: 8080
+
+### Testing application with gRPC
+Open new command line window or tab and run:
+1. `./gradlew installDist` to compile client for testing gRPC requests
+2. `./build/install/scoring-api/bin/scoring-client` to run client that executes scoring-api requests through gRPC
+
+### Testing application with REST
+1. for executing REST calls you can use CURL or Postman
+2. services available:
+   - category scores: `localhost:8080/score/categories?startDate=2020-01-01&endDate=2020-02-01`
+   - ticket scores: `localhost:8080/score/tickets?startDate=2020-01-01&endDate=2020-02-01`
+   - overall score: `localhost:8080/score/overall?startDate=2020-01-01&endDate=2020-02-01`
+   - overall score change: `localhost:8080/score/overall-change?startDatePrevious=2020-01-01&endDatePrevious=2020-02-01&startDateSelected=2020-02-01&endDateSelected=2020-03-01`
+
 # Software Engineer Test Task
 
 As a test task for [Klaus](https://www.klausapp.com) software engineering position we ask our candidates to build a small [gRPC](https://grpc.io) service using language of their choice. Prefered language for new services in Klaus is [Go](https://golang.org).
