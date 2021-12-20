@@ -15,10 +15,11 @@ The application accepts gRPC and REST requests
 Open new command line window or tab and run:
 1. `./gradlew installDist` to compile client for testing gRPC requests
 2. `./build/install/scoring-api/bin/scoring-client` to run client that executes scoring-api requests through gRPC
+3. you can see and update request params for gRPC calls in file `GrpcClient.java`
 
 ### Testing application with REST
 1. for executing REST calls you can use CURL or Postman
-2. services available:
+2. available services:
    - category scores: `localhost:8080/score/categories?startDate=2020-01-01&endDate=2020-02-01`
    - ticket scores: `localhost:8080/score/tickets?startDate=2020-01-01&endDate=2020-02-01`
    - overall score: `localhost:8080/score/overall?startDate=2020-01-01&endDate=2020-02-01`
