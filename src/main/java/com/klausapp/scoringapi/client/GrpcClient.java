@@ -25,6 +25,9 @@ public class GrpcClient{
         if( overallScore.hasScore() ){
             log.info( "Overall score received from server: " + deserialize( overallScore.getScore() ) );
         }
+        else {
+            log.info( "Overall score received from server is null" );
+        }
         ScoreChangeResponse scoreChange = stub.getOverallScoreChange(
                 createScoreChangeRequest(
                         createPeriod( "2020-01-01", "2020-02-01" ),
