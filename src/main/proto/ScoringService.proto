@@ -1,0 +1,73 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package scoring;
+
+message Period {
+  string startDate = 1;
+  string endDate = 2;
+}
+
+message ScoreRequest {
+  Period period = 1;
+}
+
+message ScoreChangeRequest {
+  Period previousPeriod = 1;
+  Period selectedPeriod = 2;
+}
+
+message DecimalValue {
+  uint32 scale = 1;
+  uint32 precision = 2;
+  bytes value = 3;
+}
+
+message RatingCategoryResponse {
+  int64 id = 1;
+  string name = 2;
+  double weight = 3;
+}
+
+message CategoryRatingResponse {
+  RatingCategoryResponse category = 1;
+  DecimalValue percentageFromMax = 2;
+  int32 ratingsCount = 3;
+}
+
+message CategoryScoreResponse {
+  string date = 1;
+  DecimalValue score = 2;
+  repeated CategoryRatingResponse categoryRatingList = 3;
+}
+
+message CategoryScoreResponseWrapper {
+  repeated CategoryScoreResponse dailyScores = 1;
+  repeated CategoryScoreResponse weeklyScores = 2;
+}
+
+message TicketScoreResponse {
+  int64 id = 1;
+  DecimalValue score = 2;
+  repeated CategoryRatingResponse categoryRatingList = 3;
+}
+
+message TicketScoreResponseWrapper {
+  repeated TicketScoreResponse wrapper = 1;
+}
+
+message OverallScoreResponse {
+  DecimalValue score = 1;
+}
+
+message ScoreChangeResponse {
+  DecimalValue previousScore = 1;
+  DecimalValue selectedScore = 2;
+  DecimalValue difference = 3;
+}
+
+service ScoringService {
+  rpc findCategoryScores(ScoreRequest) returns (CategoryScoreResponseWrapper);
+  rpc findTicketScores(ScoreRequest) returns (TicketScoreResponseWrapper);
+  rpc getOverallScore(ScoreRequest) returns (OverallScoreResponse);
+  rpc getOverallScoreChange(ScoreChangeRequest) returns (ScoreChangeResponse);
+}

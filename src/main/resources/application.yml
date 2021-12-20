@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:database.db
+    driver-class-name: org.sqlite.JDBC
+grpc:
+  server:
+    port: 9090
